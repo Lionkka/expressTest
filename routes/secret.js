@@ -2,7 +2,10 @@ var express = require('express');
 var router = express.Router();
 
 router.get('/', function(req, res) {
-    res.send('Secret content');
+    res.json({
+        success:  true,
+        message: "secret content"
+    });
 });
 
 module.exports = router;

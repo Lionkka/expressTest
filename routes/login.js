@@ -3,19 +3,35 @@ var router = express.Router();
 var usersDB = require('../users.json');
 var jwt = require('jsonwebtoken');
 
-/* GET users listing. */
-router.post('/', function(req, res) {
-    if(req.body.email === usersDB["1"].email && req.body.password === usersDB[1].password){
-        let token = jwt.sign(usersDB["1"], process.env.secret,{
+router.post('/', function(req, res, next) {
+    let errorText = '401: Unauthorized';
+    let clientLogin = req.body.email;
+    let clientPassword = req.body.password;
+
+    if(!clientLogin || !clientPassword)
+        next(new Error(errorText));
+
+    let clientObj = usersDB.filter((item)=> item.email ===  clientLogin)[0];
+    if(!clientObj)
+        next(new Error(errorText));
+
+    if(clientObj.password === clientPassword){
+
+        let token = jwt.sign({
+            id: clientObj.id
+        }, process.env.secret,{
             expiresIn: 4000
         });
         res.json({
             success: true,
-            token: token
+            message: {
+                token: token
+            }
         });
     }
     else {
-        res.status(401).send('Wrong login or password');
+
+        next(new Error(errorText));
     }
 
 
