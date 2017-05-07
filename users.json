@@ -1,8 +1,12 @@
 [
   {"id": "1",
     "email": "test@test.com",
-    "password": "test"},
+    "password": "test",
+    "firstName": "Alona",
+    "lastName":"Honcharova"},
   {"id": "2",
     "email": "test2@test.com",
-    "password": "test2"}
+    "password": "test2",
+    "firstName": "Alona2",
+    "lastName":"Honcharova2"}
 ]

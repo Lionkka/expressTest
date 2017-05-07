@@ -6,8 +6,8 @@ var bodyParser = require('body-parser');
 var jsonwebtoken = require('jsonwebtoken');
 var checkAuth = require('./middleware/checkAuth');
 
-var login = require('./routes/login');
-var secretPage = require('./routes/secret');
+var session = require('./routes/session');
+var users = require('./routes/users');
 
 var app = express();
 
@@ -18,9 +18,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/login', login);
+app.use('/session', session);
 app.use(checkAuth);
-app.use('/secret', secretPage);
+app.use('/users', users);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -35,16 +35,16 @@ app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
+  if(!res.status)
+      res.status(err.status || 500);
 
-  res.status(err.status || 500);
   res.json({
-      success: false,
       message: err.message
   });
 });
 
 module.exports = app;
 
-app.listen(3000, function () {
-    console.log('listen 3000 port');
+app.listen(3001, function () {
+    console.log('listen');
 });
