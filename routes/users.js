@@ -2,52 +2,60 @@ var express = require('express');
 var router = express.Router();
 var usersDB = require('../users.json');
 
-router.get('/', function(req, res) {
+router.get('/', getUsers);
+router.get('/:id', getUser);
+router.delete('/:id', deleteUser);
+router.patch('/:id', putchUser);
+router.post('/', postUser);
+
+function deletePassFromData(data){
+    return data.map(function (item) { delete item.password;  return item})
+}
+
+function getUsers(req, res) {
     var allUsers = deletePassFromData(usersDB);
     res.json({
         message: allUsers
     });
-});
-router.get('/:id', function(req, res) {
+}
+
+function getUser(req, res) {
     var userID = req.params.id;
     var userData = usersDB.filter((item)=> item.id ===  userID);
     userData = deletePassFromData(userData)[0];
     res.json({
         message: userData
     });
-});
-router.delete('/:id', function(req, res) {
+}
+
+function deleteUser(req, res) {
     var userID = req.params.id;
 
     res.json({
         message: 'User '+ userID +' has been deleted'
     });
-});
+}
 
-router.patch('/:id', function(req, res) {
+function putchUser(req, res) {
     var userID = req.params.id;
-    var newData = JSON.parse(req.query.data);
+    var newData = req.query;
+
     var userData = usersDB.filter((item)=> item.id ===  userID);
     userData = deletePassFromData(userData)[0];
-    for (var prop in newData) {
-        userData[prop] = newData[prop];
-    }
-
+    userData = Object.assign(userData, newData);
+    console.log(newData,'\n', userData);
     res.json({
         message: userData
     });
-});
-router.post('/', function(req, res) {
-    var newData = JSON.parse(req.body.data);
+}
+
+function postUser(req, res) {
+    console.log(req.body);
+    var newData = req.body;
     usersDB.push(newData);
-    console.log(usersDB);
     res.json({
         message: newData
     });
-});
-
-function deletePassFromData(data){
-    return data.map(function (item) { delete item.password;  return item})
 }
 
 module.exports = router;

@@ -5,6 +5,7 @@ module.exports = function (req, res, next) {
     if(req.headers.authorization){
         var token = req.headers.authorization
             .split(/\bbearer\b\s*/)[1];
+            console.log(token);
         jwt.verify(token, process.env.secret,(err)=>{
             if(err){
                 res.status(403);

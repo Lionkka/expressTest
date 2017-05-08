@@ -4,7 +4,10 @@ var usersDB = require('../users.json');
 var jwt = require('jsonwebtoken');
 var checkAuth = require('../middleware/checkAuth');
 
-router.post('/', function(req, res, next) {
+router.post('/', postSession);
+router.get('/',checkAuth, getSession);
+
+function postSession(req, res, next) {
 
     function failAuth(){
         res.status(401);
@@ -37,8 +40,9 @@ router.post('/', function(req, res, next) {
     else {
         failAuth();
     }
-});
-router.get('/',checkAuth,  function(req, res, next) {
+}
+
+function getSession(req, res, next) {
     var userID = jwt.decode(req.token).id;
     var userData = usersDB.filter((item)=> item.id ===  userID)[0];
     delete userData.password;
@@ -46,5 +50,5 @@ router.get('/',checkAuth,  function(req, res, next) {
     res.json({
         message: userData
     });
-});
+}
 module.exports = router;
