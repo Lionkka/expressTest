@@ -5,44 +5,32 @@ const path = require('path');
 const favicon = require('serve-favicon');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
-const jsonwebtoken = require('jsonwebtoken');
-const checkAuth = require('./middleware/checkAuth');
-const auth = require('./middleware/auth');
 const passport = require('passport');
-const LocalStrategy  = require('passport-local').Strategy;
 
+const checkAuth = require('./middleware/checkAuth');
 const session = require('./routes/session');
 const users = require('./routes/users');
 
 const app = express();
 
-passport.use(new LocalStrategy({
-    usernameField: 'email',
-    passwordField: 'password'
-}, function(username, password,done){
-    let verifyObj = auth(username, password);
-
-    if(!verifyObj)
-        done(new Error('Incorrect'));
-    else
-        done(null, verifyObj);
-}));
+require('./lib/authStrategy');
 
 process.env.secret = 'hello';
 
-//app.use(passport.initialize());
+app.use(passport.initialize());
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
 
 app.use('/session', session);
-app.use(checkAuth);
+app.use(passport.authenticate('bearer', { session: false }) );
 app.use('/users', users);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
-    var err = new Error('404 Not Found');
+    let err = new Error('404 Not Found');
     err.status = 404;
     next(err);
 });

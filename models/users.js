@@ -1,13 +1,21 @@
 "use strict";
 const usersDB = require('../users.json');
 
-const getAllUsersData = function () {
+const getAllUsers = function () {
     return deletePassFromData(usersDB);
 };
 
-const getUserDataById = function (id) {
+const getUserById = function (id) {
     let userData = usersDB.filter((item) => item.id === id);
-    userData = deletePassFromData(userData);
+    if(userData) userData = deletePassFromData(userData);
+    return userData[0];
+};
+const getUserByEmail = function (email) {
+    let userData = usersDB.filter((item) => item.email === email);
+    return userData[0];
+};
+const getUserByNickname = function (nickname) {
+    let userData = usersDB.filter((item) => item.nickname === nickname);
     return userData[0];
 };
 
@@ -19,5 +27,7 @@ function deletePassFromData(data) {
 }
 
 
-module.exports.getAllUsersData = getAllUsersData;
-module.exports.getUserDataById = getUserDataById;
+module.exports.getAllUsers = getAllUsers;
+module.exports.getUserById = getUserById;
+module.exports.getUserByEmail = getUserByEmail;
+module.exports.getUserByNickname = getUserByNickname;

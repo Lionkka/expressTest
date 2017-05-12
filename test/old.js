@@ -113,7 +113,7 @@ describe('Session', () => {
             console.log('redirect');
         });
         browser.on('loaded',(document)=>{
-            console.log('load -- ');
+            console.log('load -- ',document);
         });
 
 
@@ -136,23 +136,18 @@ describe('Session', () => {
                                     //console.log('-------',browser1.search('submit_approve_access'));
                                     //console.log(browser1);
 
-                                    //browser.assert.element("meta", "No element");
-                                    //console.log(browser.resources["0"].response.body);
+                                    browser.assert.element("meta", "No element");
 
                                     //browser.dump();
-                                    browser.wait('#submit_approve_access',()=>{
-                                        console.log(browser.resources["0"].response.body);
-                                        done();
-                                    });
-                                    /*setTimeout(function () {
+
+                                    setTimeout(function () {
                                         // browser.assert.element("frame", "No element");
                                         browser.click('#submit_approve_access',()=>{
-                                            console.log(browser.resources["0"].response.body);
                                             console.log('submit');
 
                                             done();
                                         });
-                                    },10000);*/
+                                    },2000);
 
 
                                 });

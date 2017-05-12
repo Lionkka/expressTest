@@ -116,51 +116,44 @@ describe('Session', () => {
             console.log('load -- ');
         });
 
+        before(function() {
+            return browser.visit('/session/google');
+        });
 
         describe('submit form', function() {
+
+            before(function() {
+                console.log('1 before');
+                browser
+                    .fill('Email',accesses.google.login);
+                return browser.pressButton('Next');
+            });
+            before(function() {
+                console.log('2 before');
+                browser
+                    .fill('Passwd',accesses.google.login);
+                return browser.pressButton('Sign in');
+            });
             before(function(done) {
-                console.log('before describe');
+                console.log('3 before');
+                //browser.assert.element("button", "No element");
 
-                browser.visit('/session/google', ()=>{
-                    console.log('visit');
-                    browser
-                        .fill('Email', accesses.google.login)
-                        .pressButton('Next', ()=>{
-
-                            browser
-                                .fill('Passwd',accesses.google.password)
-                                .pressButton('Sign in',()=>{
-                                    //console.log('fgfg');
-                                    let browser1 = browser.resources;
-                                    //console.log(browser.resources);
-                                    //console.log('-------',browser1.search('submit_approve_access'));
-                                    //console.log(browser1);
-
-                                    //browser.assert.element("meta", "No element");
-                                    //console.log(browser.resources["0"].response.body);
-
-                                    //browser.dump();
-                                    browser.wait('#submit_approve_access',()=>{
-                                        console.log(browser.resources["0"].response.body);
-                                        done();
-                                    });
-                                    /*setTimeout(function () {
-                                        // browser.assert.element("frame", "No element");
-                                        browser.click('#submit_approve_access',()=>{
-                                            console.log(browser.resources["0"].response.body);
-                                            console.log('submit');
-
-                                            done();
-                                        });
-                                    },10000);*/
-
-
-                                });
-                        });
-                });
+                browser
+                    .fill('Passwd',accesses.google.login);
+                setTimeout(function () {
+                    console.log(browser.resources["0"].response.body);
+                    done();
+                }, 1000);
 
             });
+            before(function () {
+                console.log(browser.resources["0"].response.body);
+                return browser.click('#submit_approve_access');
+            });
+
             it('should be successful', function() {
+                console.log('it');
+                browser.dump();
                 //console.log(browser.resources["0"].response.body);
                 //console.log('it');
                 browser.assert.success();
