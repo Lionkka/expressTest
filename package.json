@@ -22,7 +22,8 @@
     "passport-twitter": "*",
     "passport-google-oauth2": "*",
     "passport-local": "*",
-    "passport-http-bearer": "*"
+    "passport-http-bearer": "*",
+    "request": "latest"
   },
   "devDependencies": {
     "chai": "*",

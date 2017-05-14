@@ -7,7 +7,6 @@ const logger = require('morgan');
 const bodyParser = require('body-parser');
 const passport = require('passport');
 
-const checkAuth = require('./middleware/checkAuth');
 const session = require('./routes/session');
 const users = require('./routes/users');
 
