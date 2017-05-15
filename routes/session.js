@@ -3,12 +3,11 @@ const express = require('express');
 const router = express.Router();
 const usersDB = require('../users.json');
 const jwt = require('jsonwebtoken');
-const checkAuth = require('../middleware/checkAuth');
 const passport = require('passport');
 const User = require('../models/users');
 
 router.post('/', authByLogin);
-router.get('/', checkAuth, getCurrentUser);
+router.get('/', passport.authenticate('bearer', { session: false }), getCurrentUser);
 
 router.get('/facebook', passport.authenticate('facebook', {failureRedirect: '/facebook', scope: ['email']}));
 router.get('/facebook/callback', passport.authenticate('facebook',
