@@ -9,12 +9,11 @@ const passport = require('passport');
 
 const session = require('./routes/session');
 const users = require('./routes/users');
+const parser = require('./routes/parser');
 
 const app = express();
 
 require('./lib/authStrategy');
-
-process.env.secret = 'hello';
 
 app.use(passport.initialize());
 app.use(logger('dev'));
@@ -24,6 +23,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
 
 app.use('/session', session);
+app.use('/parser', parser);
 app.use(passport.authenticate('bearer', { session: false }) );
 app.use('/users', users);
 
