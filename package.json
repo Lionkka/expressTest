@@ -23,7 +23,8 @@
     "passport-google-oauth2": "*",
     "passport-local": "*",
     "passport-http-bearer": "*",
-    "request": "latest"
+    "request": "latest",
+    "cheerio":"*"
   },
   "devDependencies": {
     "chai": "*",
